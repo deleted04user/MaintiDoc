@@ -1,0 +1,1 @@
+"""MaintiDoc maintenance documentation assistant."""
