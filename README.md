@@ -37,3 +37,29 @@ Les tests utilisent le vrai PDF, Tesseract, Qdrant, LangGraph et le transport MC
 ```powershell
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
+
+## Accès et exploitation
+
+L’accès local par défaut repose sur le compte Windows et l’écoute sur 127.0.0.1. Pour activer les comptes applicatifs, générer deux clés avec `python -m maintidoc.access`, puis définir `MAINTIDOC_ACCOUNTS` sur le chemin absolu de `.maintidoc/accounts.json`. Les clés initiales sont dans `.maintidoc/login-keys.json`. Conserver ces fichiers dans le profil privé de l’opérateur. Un lecteur peut consulter le seul corpus SAN autorisé et les outils de lecture. Le rôle technicien permet aussi la création approuvée. Le serveur de maintenance revérifie le rôle lors de l’appel.
+
+Pour un lancement Docker local, démarrer Ollama sur l’hôte et rendre son API accessible au conteneur. Générer les comptes avant le premier lancement. Les volumes Docker ont leur propre index et leur propre cache de modèles.
+
+```powershell
+docker compose build
+docker compose run --rm app python -m maintidoc.retrieval
+docker compose up -d
+docker compose ps
+docker compose logs app
+```
+
+L’interface Docker écoute sur le port 8502 de la machine. La sonde contrôle Streamlit. Les événements de recherche contiennent le rôle, la durée, le nombre de sources et la présence éventuelle d’un brouillon. Le mode de secours se lance avec `python preview.py --index`, puis `python -m streamlit run preview.py`.
+
+## Mesures et adaptation
+
+Arrêter le serveur web si son processus détient le verrou Qdrant embarqué, ou utiliser un serveur Qdrant partagé. Exécuter `python -m maintidoc.evaluate` pour les douze questions du manuel. Recall@5 mesure la proportion des groupes de preuves retrouvés, nDCG@5 récompense leur position et MRR@10 utilise le rang de la première réponse pertinente. Les temps de recherche sont distincts des temps de génération.
+
+`python -m maintidoc.tune` ajuste une tête de classement à deux paramètres sur huit triplets du manuel avec le modèle multilingue gelé. L’expérience compare le score du modèle et le recouvrement lexical. Les questions de test diffèrent des requêtes d’apprentissage et proviennent du même document. `python -m maintidoc.demo` enregistre les réponses, leurs citations, les temps de réponse et trois essais sur des figures dégradées dans `evaluation-full.json`.
+
+Pour envoyer les métriques agrégées à une instance MLflow, définir `MLFLOW_TRACKING_URI` et lancer `python -m maintidoc.track evaluation-full.json`. Le client Telegram de consultation se lance avec `python -m maintidoc.telegram` après configuration de `TELEGRAM_BOT_TOKEN` et d’une liste de comptes privés autorisés dans `TELEGRAM_CHAT_IDS`. Avec le contrôle des comptes activé, ajouter un compte lecteur nommé `telegram-<chat_id>` pour chaque utilisateur autorisé. Le pilote Telegram traite les questions textuelles.
+
+Le suivi local utilise le paquet optionnel `mlflow-skinny==3.18.0`. Sans URI distante, les trois comparaisons peuvent être enregistrées dans `.maintidoc/mlruns`. Pour réutiliser les poids déjà téléchargés sous Windows avec Compose, définir `MAINTIDOC_MODEL_CACHE` sur le chemin absolu du cache FastEmbed avant de créer le conteneur. Les identifiants et les fichiers d’exécution restent dans `.maintidoc`.

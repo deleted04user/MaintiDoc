@@ -1,0 +1,179 @@
+{
+  "encoder": "minilm-multilingual/clip-b32/bge-m3-int8",
+  "cases": [
+    {
+      "question": "Quel est le role des deux fabrics ?",
+      "top5": [
+        "P2-2",
+        "PERIMETRE-3",
+        "FIG-02",
+        "FIG-01",
+        "DIAG-FC-01"
+      ],
+      "seconds": 4.34,
+      "recall5": 1.0,
+      "ndcg5": 0.5706417189553201,
+      "mrr10": 0.3333333333333333
+    },
+    {
+      "question": "Ou intervient le zoning ?",
+      "top5": [
+        "DIAG-FC-01",
+        "FIG-02",
+        "PERIMETRE-6",
+        "P6-4",
+        "FIG-05"
+      ],
+      "seconds": 4.44,
+      "recall5": 1.0,
+      "ndcg5": 0.6309297535714575,
+      "mrr10": 0.5
+    },
+    {
+      "question": "Que signifie MPIO ?",
+      "top5": [
+        "LEXIQUE-FC-5",
+        "FIG-02",
+        "AL-04",
+        "FIG-05",
+        "FIG-04"
+      ],
+      "seconds": 3.93,
+      "recall5": 1.0,
+      "ndcg5": 1.0,
+      "mrr10": 1.0
+    },
+    {
+      "question": "Le disque B03 a-t-il un antecedent ?",
+      "top5": [
+        "INC-117",
+        "FIG-03",
+        "COMPOSANTS-3",
+        "P4-2",
+        "AL-02"
+      ],
+      "seconds": 4.36,
+      "recall5": 1.0,
+      "ndcg5": 1.0,
+      "mrr10": 1.0
+    },
+    {
+      "question": "Quel est le sens de AL-01 ?",
+      "top5": [
+        "AL-01",
+        "AL-00",
+        "EXEMPLE-TICKET-2",
+        "AL-04",
+        "AL-02"
+      ],
+      "seconds": 3.94,
+      "recall5": 1.0,
+      "ndcg5": 1.0,
+      "mrr10": 1.0
+    },
+    {
+      "question": "Le voyant orange permet-il un diagnostic certain ?",
+      "top5": [
+        "P5-3",
+        "AL-01",
+        "FIG-04",
+        "AL-02",
+        "P6-4"
+      ],
+      "seconds": 4.59,
+      "recall5": 1.0,
+      "ndcg5": 1.0,
+      "mrr10": 1.0
+    },
+    {
+      "question": "Que faut-il verifier avant un ticket ?",
+      "top5": [
+        "PROC-SAN-01",
+        "DISC-02",
+        "P2-4",
+        "FIG-05",
+        "AUTORISATIONS-2"
+      ],
+      "seconds": 4.63,
+      "recall5": 1.0,
+      "ndcg5": 1.0,
+      "mrr10": 1.0
+    },
+    {
+      "question": "Qui doit approuver la creation du ticket ?",
+      "top5": [
+        "AUTORISATIONS-3",
+        "PROC-SAN-01",
+        "AUTORISATIONS-2",
+        "DISC-02",
+        "FIG-05"
+      ],
+      "seconds": 5.36,
+      "recall5": 1.0,
+      "ndcg5": 1.0,
+      "mrr10": 1.0
+    },
+    {
+      "question": "Quelle procedure correspond a une perte de chemin ?",
+      "top5": [
+        "INC-104",
+        "P3-2",
+        "EXEMPLE-TICKET-3",
+        "P6-4",
+        "FIG-03"
+      ],
+      "seconds": 4.73,
+      "recall5": 0.0,
+      "ndcg5": 0.0,
+      "mrr10": 0
+    },
+    {
+      "question": "Peut-on declencher un failover depuis MaintiDoc ?",
+      "top5": [
+        "AUTORISATIONS-4",
+        "P6-4",
+        "FIG-05",
+        "AUTORISATIONS-1",
+        "AUTORISATIONS-2"
+      ],
+      "seconds": 4.92,
+      "recall5": 1.0,
+      "ndcg5": 1.0,
+      "mrr10": 1.0
+    },
+    {
+      "question": "Quelle alerte touche la capacite ?",
+      "top5": [
+        "AL-04",
+        "DISC-02",
+        "FIG-03",
+        "INC-125",
+        "P4-1"
+      ],
+      "seconds": 4.98,
+      "recall5": 1.0,
+      "ndcg5": 1.0,
+      "mrr10": 1.0
+    },
+    {
+      "question": "Quels elements retrouve-t-on dans le ticket exemple ?",
+      "top5": [
+        "EXEMPLE-TICKET-5",
+        "EXEMPLE-TICKET-1",
+        "P7-2",
+        "P5-3",
+        "PROC-SAN-01"
+      ],
+      "seconds": 5.31,
+      "recall5": 1.0,
+      "ndcg5": 1.0,
+      "mrr10": 1.0
+    }
+  ],
+  "mean": {
+    "recall5": 0.917,
+    "ndcg5": 0.85,
+    "mrr10": 0.819,
+    "seconds": 4.628
+  }
+}

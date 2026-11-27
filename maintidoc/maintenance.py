@@ -96,6 +96,8 @@ def sign(secret, actor, request_id, expiry, equipment_id, title, description):
 def create_ticket(equipment_id: str, title: str, description: str, approval_token: str) -> TicketResult:
     """Create one ticket from an approval for the exact content."""
     check_equipment(equipment_id)
+    if os.environ.get("MAINTIDOC_ROLE", "technician") != "technician":
+        raise ValueError("Création réservée aux techniciens.")
     secret = os.environ.get("MAINTIDOC_APPROVAL_SECRET", "")
     actor = os.environ.get("MAINTIDOC_ACTOR", "")
     match = re.fullmatch(r"([0-9a-f]{32})\.(\d{1,12})\.([0-9a-f]{64})", approval_token)
@@ -128,10 +130,17 @@ class Maintenance:
         self.secret = uuid4().hex + uuid4().hex
 
     async def _call(self, actor, calls):
+        role = "technician"
+        accounts = os.getenv("MAINTIDOC_ACCOUNTS")
+        if accounts:
+            with open(accounts, encoding="utf-8-sig") as handle:
+                role = json.load(handle).get(actor.rsplit("/", 1)[0], {}).get("role")
+            if role not in ("reader", "technician"):
+                raise ValueError("Compte sans accès au SAN.")
         params = StdioServerParameters(
             command=sys.executable, args=["-m", "maintidoc.maintenance"], cwd=str(ROOT),
             env={"MAINTIDOC_DATA": str(self.root), "MAINTIDOC_ACTOR": actor,
-                 "MAINTIDOC_APPROVAL_SECRET": self.secret},
+                 "MAINTIDOC_APPROVAL_SECRET": self.secret, "MAINTIDOC_ROLE": role},
         )
         async with asyncio.timeout(20):
             async with stdio_client(params) as (read, write):

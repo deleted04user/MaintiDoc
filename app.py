@@ -1,11 +1,15 @@
 from io import BytesIO
+import logging
+import time
 from uuid import uuid4
 
 import streamlit as st
+from streamlit.logger import get_logger
 from langgraph.types import Command
 from PIL import Image, ImageOps
 
 from maintidoc.corpus import DATA, DOCUMENT, EQUIPMENT
+from maintidoc.access import identify
 from maintidoc.maintenance import Maintenance
 from maintidoc.retrieval import Index
 from maintidoc.workflow import build_workflow
@@ -16,8 +20,8 @@ st.caption("Assistant documentaire de maintenance • SAN-LAB 2000 • Banc d’
 
 
 @st.cache_resource
-def resources():
-    return Index(), Maintenance()
+def resources(_index_factory):
+    return _index_factory(), Maintenance()
 
 
 def normalize_photo(upload):
@@ -31,15 +35,16 @@ def normalize_photo(upload):
         return output.getvalue()
 
 
+account, role = identify()
 if not (DATA / "active-index.json").exists():
     st.info("Le manuel doit être indexé avant la première recherche.")
     st.code("python -m maintidoc.retrieval", language="powershell")
     st.stop()
 
-index, maintenance = resources()
+index, maintenance = resources(globals().get("index_factory", Index))
 session = st.session_state
 if "actor" not in session:
-    session.actor = uuid4().hex
+    session.actor = f"{account}/{uuid4().hex}"
     session.graph = build_workflow(index, maintenance)
     session.config = None
     session.result = {}
@@ -53,7 +58,7 @@ with main:
                                 max_chars=1200, disabled=session.pending)
         upload = st.file_uploader("Photo du panneau ou du composant", type=["png", "jpg", "jpeg", "webp"],
                                   disabled=session.pending)
-        prepare = st.checkbox("Préparer un ticket", disabled=session.pending)
+        prepare = st.checkbox("Préparer un ticket", disabled=session.pending or role != "technician")
         submit = st.form_submit_button("Interroger le manuel", type="primary", disabled=session.pending)
     if submit:
         if not question.strip():
@@ -66,15 +71,20 @@ with main:
             else:
                 config = {"configurable": {"thread_id": uuid4().hex}, "recursion_limit": 14}
                 try:
+                    started = time.monotonic()
                     with st.spinner("Recherche dans le manuel…"):
                         result = session.graph.invoke({
                             "question": question.strip(), "photo": photo, "actor": session.actor,
-                            "equipment_id": EQUIPMENT, "ticket_requested": prepare,
+                            "equipment_id": EQUIPMENT, "ticket_requested": prepare, "role": role,
                         }, config)
                 except (OSError, ValueError, RuntimeError, ImportError) as error:
                     st.error(f"Recherche indisponible. {error}")
                     session.graph.checkpointer.delete_thread(config["configurable"]["thread_id"])
                 else:
+                    get_logger("maintidoc.audit").log(
+                        logging.INFO, "search role=%s elapsed_ms=%d sources=%d draft=%s",
+                        role, (time.monotonic()-started)*1000, len(result.get("evidence", [])),
+                        bool(result.get("draft")))
                     if session.config:
                         session.graph.checkpointer.delete_thread(
                             session.config["configurable"]["thread_id"])

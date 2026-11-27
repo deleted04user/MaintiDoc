@@ -54,19 +54,25 @@ def ollama(prompt, schema, payload, images=()):
                 for message in prompt.format_messages(payload=json.dumps(payload, ensure_ascii=False))]
     if images:
         messages[-1]["images"] = [base64.b64encode(image).decode("ascii") for image in images]
+    model = os.getenv("OLLAMA_MODEL", "qwen3-vl:2b")
+    if not images:
+        model = os.getenv("OLLAMA_TEXT_MODEL", model)
     response = httpx.post(
         os.getenv("OLLAMA_URL", "http://127.0.0.1:11434").rstrip("/") + "/api/chat",
-        json={"model": os.getenv("OLLAMA_MODEL", "qwen3-vl:2b"), "messages": messages,
+        json={"model": model, "messages": messages, "keep_alive": os.getenv("OLLAMA_KEEP_ALIVE","5m"),
               "stream": False, "think": False, "format": schema.model_json_schema(),
               "options": {"temperature": 0, "num_predict": 700, "num_batch": 128,
                           "num_ctx": int(os.getenv("OLLAMA_NUM_CTX", "4096"))}},
         timeout=60,
     )
     response.raise_for_status()
-    return schema.model_validate_json(response.json()["message"]["content"])
+    message = response.json()["message"]
+    # Some Ollama runners place the entire structured response in the thinking field.
+    return schema.model_validate_json(message["content"] or message.get("thinking", ""))
 
 
 class State(TypedDict, total=False):
+    role: str
     question: str
     photo: bytes | None
     actor: str
@@ -101,7 +107,7 @@ def build_workflow(index, maintenance, generate=ollama):
             tools.append("get_equipment_history")
         if wants_open or ticket:
             tools.append("get_open_tickets")
-        return {"ticket_requested": ticket, "tools": tools}
+        return {"ticket_requested": ticket and state.get("role", "technician") == "technician", "tools": tools}
 
     def retrieve(state):
         photo = state.get("photo")
@@ -137,11 +143,12 @@ def build_workflow(index, maintenance, generate=ollama):
                 clarification="Pouvez-vous confirmer le code d’alarme, le modèle et le contexte du panneau ?"
             ).model_dump()}
         images = [state["photo"]] if state.get("photo") else []
+        visual_question = bool(images or re.search(r"sch[eé]ma|figure|photo|diagram|FIG-\d", question, re.I))
         sources = []
         for number, row in enumerate(evidence, 1):
             source = {"source": number, "page": row["page"], "element": row["element_id"],
                       "text": row["text"]}
-            if row.get("image") and len(images) < 2:
+            if visual_question and row.get("image") and len(images) < 2:
                 images.append(index.image_path(row).read_bytes())
                 source["image_jointe"] = len(images)
             sources.append(source)
@@ -174,6 +181,13 @@ def build_workflow(index, maintenance, generate=ollama):
                 if supported and (claims or candidate.clarification):
                     return {"answer": raw}
         if state["attempts"] >= 2 or not raw:
+            codes = set(re.findall(r"\b(?:AL|INC)-\d+\b", state["question"].upper()))
+            for source, row in enumerate(evidence, 1):
+                if row["element_id"] in codes and row["kind"] == "table":
+                    quote = row["text"]
+                    return {"answer": Answer(claims=[Claim(source=source, statement=quote,
+                                                            quote=quote)]).model_dump(),
+                            "response_note":"Ligne du manuel correspondant à la référence demandée."}
             fallback = Answer(clarification="Pouvez-vous préciser le composant ou la référence à vérifier ?")
             return {"answer": fallback.model_dump(),
                     "response_note": "La réponse n’a pas pu être vérifiée. Les extraits retrouvés restent consultables."}

@@ -115,7 +115,7 @@ class Index:
         pending.replace(self.active)
         return result
 
-    def search(self, query, photo=None):
+    def search(self, query, photo=None, limit=6):
         manifest = json.loads(self.active.read_text(encoding="utf-8"))
         if manifest["encoder"] != self.encoders.signature:
             raise ValueError("Réindexez le manuel avec les encodeurs actifs.")
@@ -125,6 +125,7 @@ class Index:
         sparse = lexical(query)
         candidates = {}
         fusion = Counter()
+        visual_match = None
         for collection in (TEXT, FIGURES):
             if not self.client.collection_exists(collection):
                 continue
@@ -136,6 +137,8 @@ class Index:
             for name, vector in queries.items():
                 hits = self.client.query_points(collection, query=vector, using=name,
                                                 query_filter=scope, limit=8).points
+                if name == "visual" and hits:
+                    visual_match = hits[0].id
                 for rank, hit in enumerate(hits, 1):
                     candidates[hit.id] = hit.payload
                     fusion[hit.id] += 1 / (20 + rank)
@@ -152,10 +155,16 @@ class Index:
         values = [f'{candidates[key]["heading"]} {candidates[key]["text"]}' for key in shortlist]
         scores = dict(zip(shortlist, self.encoders.rank(query, values)))
         ranked = sorted(shortlist, key=lambda key: (exact(key), scores[key], fusion[key]), reverse=True)
-        selected = ranked[:6]
+        selected = ranked[:limit]
+        if visual_match is not None:
+            # The text reranker cannot compare pixels. Preserve the nearest image as evidence.
+            selected = ([visual_match] + [key for key in ranked if key != visual_match])[:limit]
         figure = next((key for key in ranked if candidates[key]["kind"] == "figure"), None)
         if figure and figure not in selected and (photo is not None or re.search(r"figure|schéma|schema|diagram", query, re.I)):
             selected[-1] = figure
+        if os.getenv("MAINTIDOC_LOW_MEMORY") == "1":
+            for model in ("text_model", "image_model", "reranker"):
+                self.encoders.__dict__.pop(model, None)
         return [candidates[key] for key in selected]
 
     def image_path(self, row):

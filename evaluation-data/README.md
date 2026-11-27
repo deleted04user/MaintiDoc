@@ -1,0 +1,1 @@
+The photograph qlogic.jpg shows a QLogic SANbox 5600. Photographer: Melee. The original JPEG is redistributed under CC BY-SA 3.0. The evaluation downsizes an in-memory copy. [Original file and attribution](https://commons.wikimedia.org/wiki/File:ML-QLOGICNFCCONN.JPG) · [License](https://creativecommons.org/licenses/by-sa/3.0/).

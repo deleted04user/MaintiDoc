@@ -1,0 +1,9 @@
+*
+!requirements.txt
+!app.py
+!maintidoc/
+!maintidoc/*.py
+!data/
+!data/*.pdf
+!.streamlit/
+!.streamlit/config.toml
