@@ -142,9 +142,9 @@ class Maintenance:
             env={"MAINTIDOC_DATA": str(self.root), "MAINTIDOC_ACTOR": actor,
                  "MAINTIDOC_APPROVAL_SECRET": self.secret, "MAINTIDOC_ROLE": role},
         )
-        async with asyncio.timeout(20):
+        async with asyncio.timeout(55):
             async with stdio_client(params) as (read, write):
-                async with ClientSession(read, write, read_timeout_seconds=timedelta(seconds=8)) as session:
+                async with ClientSession(read, write, read_timeout_seconds=timedelta(seconds=30)) as session:
                     await session.initialize()
                     outputs = {}
                     for tool, args in calls:

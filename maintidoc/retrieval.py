@@ -158,7 +158,8 @@ class Index:
         selected = ranked[:limit]
         if visual_match is not None:
             # The text reranker cannot compare pixels. Preserve the nearest image as evidence.
-            selected = ([visual_match] + [key for key in ranked if key != visual_match])[:limit]
+            ordered = [visual_match] + [key for key in ranked if key != visual_match]
+            selected = sorted(ordered, key=exact, reverse=True)[:limit]
         figure = next((key for key in ranked if candidates[key]["kind"] == "figure"), None)
         if figure and figure not in selected and (photo is not None or re.search(r"figure|schéma|schema|diagram", query, re.I)):
             selected[-1] = figure
