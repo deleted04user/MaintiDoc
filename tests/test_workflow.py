@@ -62,6 +62,15 @@ class MaintiDocTest(unittest.TestCase):
         self.assertEqual(len(calls), 2)
         self.assertEqual(result["answer"]["claims"][0]["quote"], "Chemin FC degrade")
 
+    def test_unsourced_model_clarification_cannot_override_alarm_reference(self):
+        def generate(prompt, schema, payload, images=()):
+            return Answer(clarification="Le voyant impose un remplacement immédiat.")
+
+        graph = build_workflow(self.index, self.maintenance, generate)
+        result = graph.invoke(self.state("Que signifie AL-01 ?"), self.config("fallback"))
+        self.assertEqual(result["answer"]["clarification"], "")
+        self.assertIn("Chemin FC degrade", result["answer"]["claims"][0]["quote"])
+
     def test_mcp_requires_approval_and_creates_exact_draft_once(self):
         # Extractive model stand-in. The MCP transport and ticket store are real.
         def generate(prompt, schema, payload, images=()):

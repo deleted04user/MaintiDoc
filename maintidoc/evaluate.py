@@ -49,7 +49,16 @@ def evaluate(index):
 
 
 if __name__ == "__main__":
-    index = Index()
+    import argparse
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--adapted", action="store_true", help="Utiliser la tête ajustée par maintidoc.tune")
+    args = parser.parse_args()
+    encoders = None
+    if args.adapted:
+        from .tune import AdaptedEncoders
+        encoders = AdaptedEncoders()
+    index = Index(encoders=encoders)
     try:
         print(json.dumps(evaluate(index), ensure_ascii=False, indent=2))
     finally:
