@@ -1,0 +1,498 @@
+{
+  "encoder": "minilm-multilingual/clip-b32/bge-m3-int8",
+  "cases": [
+    {
+      "question": "Quel est le role des deux fabrics ?",
+      "top5": [
+        "P2-2",
+        "PERIMETRE-3",
+        "FIG-02",
+        "FIG-01",
+        "LEXIQUE-FC-3"
+      ],
+      "seconds": 14.21,
+      "recall5": 1.0,
+      "ndcg5": 0.5706417189553201,
+      "mrr10": 0.3333333333333333,
+      "answer": {
+        "claims": [
+          {
+            "source": 1,
+            "statement": "Le SAN-LAB 2000 est une baie de stockage fictive a deux controleurs (A et B). Deux fabrics Fibre Channel independantes relient les hotes aux ports de la baie. Le stockage est expose sous forme de volumes logiques (LUN).",
+            "quote": "Le SAN-LAB 2000 est une baie de stockage fictive a deux controleurs (A et B). Deux fabrics Fibre Channel independantes relient les hotes aux ports de la baie. Le stockage est expose sous forme de volumes logiques (LUN)."
+          },
+          {
+            "source": 2,
+            "statement": "PERIMETRE | Champ: Connectivite | Valeur pedagogique: 2 fabrics FC A/B ; zoning et LUN masking",
+            "quote": "PERIMETRE | Champ: Connectivite | Valeur pedagogique: 2 fabrics FC A/B ; zoning et LUN masking"
+          }
+        ],
+        "clarification": ""
+      },
+      "cited_elements": [
+        "P2-2",
+        "PERIMETRE-3"
+      ],
+      "answer_seconds": 35.31
+    },
+    {
+      "question": "Ou intervient le zoning ?",
+      "top5": [
+        "DIAG-FC-01",
+        "FIG-02",
+        "PERIMETRE-6",
+        "P6-4",
+        "FIG-01"
+      ],
+      "seconds": 8.42,
+      "recall5": 1.0,
+      "ndcg5": 0.6309297535714575,
+      "mrr10": 0.5,
+      "answer": {
+        "claims": [
+          {
+            "source": 1,
+            "statement": "1. Identifier le serveur et le volume affecte. 2. Consulter les journaux et l’etat des chemins sur l’hote. 3. Verifier l’etat des ports FC et des deux switches. 4. Comparer les WWPN et le zoning aux configurations approuvees. 5. Ne rien modifier avant validation de l’equipe stockage/reseau. Reference de diagnostic : DIAG-FC-01, figure FIG-02.",
+            "quote": "1. Identifier le serveur et le volume affecte. 2. Consulter les journaux et l’etat des chemins sur l’hote. 3. Verifier l’etat des ports FC et des deux switches. 4. Comparer les WWPN et le zoning aux configurations approuvees. 5. Ne rien modifier avant validation de l’equipe stockage/reseau. Reference de diagnostic : DIAG-FC-01, figure FIG-02."
+          },
+          {
+            "source": 3,
+            "statement": "PERIMETRE | Champ: Exclusions | Valeur pedagogique: Aucune instruction de remplacement a chaud ni modification de zoning en production",
+            "quote": "PERIMETRE | Champ: Exclusions | Valeur pedagogique: Aucune instruction de remplacement a chaud ni modification de zoning en production"
+          }
+        ],
+        "clarification": ""
+      },
+      "cited_elements": [
+        "DIAG-FC-01",
+        "PERIMETRE-6"
+      ],
+      "answer_seconds": 37.67
+    },
+    {
+      "question": "Que signifie MPIO ?",
+      "top5": [
+        "LEXIQUE-FC-5",
+        "FIG-02",
+        "AL-04",
+        "FIG-05",
+        "FIG-04"
+      ],
+      "seconds": 7.21,
+      "recall5": 1.0,
+      "ndcg5": 1.0,
+      "mrr10": 1.0,
+      "answer": {
+        "claims": [
+          {
+            "source": 1,
+            "statement": "LEXIQUE-FC | Terme: MPIO | Definition / verification: Gestion des chemins multiples et basculement selon configuration",
+            "quote": "LEXIQUE-FC | Terme: MPIO | Definition / verification: Gestion des chemins multiples et basculement selon configuration"
+          }
+        ],
+        "clarification": ""
+      },
+      "cited_elements": [
+        "LEXIQUE-FC-5"
+      ],
+      "answer_seconds": 32.14
+    },
+    {
+      "question": "Le disque B03 a-t-il un antecedent ?",
+      "top5": [
+        "INC-117",
+        "FIG-03",
+        "COMPOSANTS-3",
+        "P4-2",
+        "AL-02"
+      ],
+      "seconds": 8.69,
+      "recall5": 1.0,
+      "ndcg5": 1.0,
+      "mrr10": 1.0,
+      "answer": {
+        "claims": [
+          {
+            "source": 1,
+            "statement": "HISTORIQUE | Ticket: INC-117 | Date: 2026-10-02 | Actif: Disque B03 | Observation / suite: Pre-alerte ; examen du groupe de protection",
+            "quote": "HISTORIQUE | Ticket: INC-117 | Date: 2026-10-02 | Actif: Disque B03 | Observation / suite: Pre-alerte ; examen du groupe de protection"
+          },
+          {
+            "source": 3,
+            "statement": "COMPOSANTS | Element: Disque Bxx | Symptome possible: Defaut ou pre-alerte | Verification documentaire: ID exact, groupe, reconstruction",
+            "quote": "COMPOSANTS | Element: Disque Bxx | Symptome possible: Defaut ou pre-alerte | Verification documentaire: ID exact, groupe, reconstruction"
+          }
+        ],
+        "clarification": ""
+      },
+      "cited_elements": [
+        "INC-117",
+        "COMPOSANTS-3"
+      ],
+      "answer_seconds": 40.28
+    },
+    {
+      "question": "Quel est le sens de AL-01 ?",
+      "top5": [
+        "AL-01",
+        "AL-00",
+        "AL-04",
+        "EXEMPLE-TICKET-2",
+        "AL-02"
+      ],
+      "seconds": 7.4,
+      "recall5": 1.0,
+      "ndcg5": 1.0,
+      "mrr10": 1.0,
+      "answer": {
+        "claims": [
+          {
+            "source": 1,
+            "statement": "ALARM-TAB-01 | Code: AL-01 | Etat: Orange | Signification pour le simulateur: Chemin FC degrade",
+            "quote": "Chemin FC degrade"
+          },
+          {
+            "source": 2,
+            "statement": "AL-00",
+            "quote": "Etat nominal declare"
+          },
+          {
+            "source": 3,
+            "statement": "AL-04",
+            "quote": "Capacite libre faible"
+          },
+          {
+            "source": 4,
+            "statement": "AL-01",
+            "quote": "Alerte AL-01 sur fabric A"
+          },
+          {
+            "source": 5,
+            "statement": "AL-02",
+            "quote": "Disque en pre-alerte | Reponse documentaire: Consulter FIG-03 et DISC-02"
+          }
+        ],
+        "clarification": ""
+      },
+      "cited_elements": [
+        "AL-01",
+        "AL-00",
+        "AL-04",
+        "EXEMPLE-TICKET-2",
+        "AL-02"
+      ],
+      "answer_seconds": 25.66
+    },
+    {
+      "question": "Le voyant orange permet-il un diagnostic certain ?",
+      "top5": [
+        "P5-3",
+        "AL-01",
+        "FIG-04",
+        "AL-02",
+        "P6-4"
+      ],
+      "seconds": 8.33,
+      "recall5": 1.0,
+      "ndcg5": 1.0,
+      "mrr10": 1.0,
+      "answer": {
+        "claims": [
+          {
+            "source": 1,
+            "statement": "Une photographie du voyant ne suffit PAS a identifier la cause.",
+            "quote": "Une photographie du voyant ne suffit PAS a identifier la cause."
+          }
+        ],
+        "clarification": "Pouvez-vous confirmer le code d’alarme, le modèle et le contexte du panneau ?"
+      },
+      "cited_elements": [
+        "P5-3"
+      ],
+      "answer_seconds": 4.56
+    },
+    {
+      "question": "Que faut-il verifier avant un ticket ?",
+      "top5": [
+        "PROC-SAN-01",
+        "DISC-02",
+        "P2-4",
+        "FIG-05",
+        "AUTORISATIONS-2"
+      ],
+      "seconds": 7.7,
+      "recall5": 1.0,
+      "ndcg5": 1.0,
+      "mrr10": 1.0,
+      "answer": {
+        "claims": [
+          {
+            "source": 1,
+            "statement": "1. Enregistrer date/heure, identifiant de baie, composant et code alarme. 2. Verifier le perimetre affecte (hotes, volumes, groupe). 3. Rechercher les passages et figures pertinents dans le manuel. 4. Consulter les evenements et interventions anterieures. 5. Preciser preuves, limites et hypotheses. 6. Preparer un brouillon de ticket. 7. Attendre l’approbation explicite pour la creation effective du ticket.",
+            "quote": "1. Enregistrer date/heure, identifiant de baie, composant et code alarme. 2. Verifier le perimetre affecte (hotes, volumes, groupe). 3. Rechercher les passages et figures pertinents dans le manuel. 4. Consulter les evenements et interventions anterieures. 5. Preciser preuves, limites et hypotheses. 6. Preparer un brouillon de ticket. 7. Attendre l’approbation explicite pour la creation effective du ticket."
+          },
+          {
+            "source": 2,
+            "statement": "Consulter l’identifiant physique et l’horodatage de l’alerte. Examiner l’etat du groupe de protection et la presence d’une reconstruction en cours. Preparer un ticket avec preuves, sans lancer automatiquement de remplacement ni de reconstruction.",
+            "quote": "Consulter l’identifiant physique et l’horodatage de l’alerte. Examiner l’etat du groupe de protection et la presence d’une reconstruction en cours. Preparer un ticket avec preuves, sans lancer automatiquement de remplacement ni de reconstruction."
+          }
+        ],
+        "clarification": ""
+      },
+      "cited_elements": [
+        "PROC-SAN-01",
+        "DISC-02"
+      ],
+      "answer_seconds": 29.14
+    },
+    {
+      "question": "Qui doit approuver la creation du ticket ?",
+      "top5": [
+        "AUTORISATIONS-3",
+        "PROC-SAN-01",
+        "AUTORISATIONS-2",
+        "DISC-02",
+        "FIG-05"
+      ],
+      "seconds": 8.64,
+      "recall5": 1.0,
+      "ndcg5": 1.0,
+      "mrr10": 1.0,
+      "answer": {
+        "claims": [
+          {
+            "source": 1,
+            "statement": "AUTORISATIONS | Operation: Creer un ticket | Autorisation dans MaintiDoc: Seulement apres approbation humaine",
+            "quote": "AUTORISATIONS | Operation: Creer un ticket | Autorisation dans MaintiDoc: Seulement apres approbation humaine"
+          },
+          {
+            "source": 2,
+            "statement": "1. Enregistrer date/heure, identifiant de baie, composant et code alarme. 2. Verifier le perimetre affecte (hotes, volumes, groupe). 3. Rechercher les passages et figures pertinents dans le manuel. 4. Consulter les evenements et interventions anterieures. 5. Preciser preuves, limites et hypotheses. 6. Preparer un brouillon de ticket. 7. Attendre l’approbation explicite pour la creation effective du ticket.",
+            "quote": "1. Enregistrer date/heure, identifiant de baie, composant et code alarme. 2. Verifier le perimetre affecte (hotes, volumes, groupe). 3. Rechercher les passages et figures pertinents dans le manuel. 4. Consulter les evenements et interventions anterieures. 5. Preciser preuves, limites et hypotheses. 6. Preparer un brouillon de ticket. 7. Attendre l’approbation explicite pour la creation effective du ticket."
+          }
+        ],
+        "clarification": ""
+      },
+      "cited_elements": [
+        "AUTORISATIONS-3",
+        "PROC-SAN-01"
+      ],
+      "answer_seconds": 29.81
+    },
+    {
+      "question": "Quelle procedure correspond a une perte de chemin ?",
+      "top5": [
+        "P3-2",
+        "INC-104",
+        "P6-4",
+        "FIG-05",
+        "EXEMPLE-TICKET-3"
+      ],
+      "seconds": 8.22,
+      "recall5": 0.0,
+      "ndcg5": 0.0,
+      "mrr10": 0,
+      "answer": {
+        "claims": [
+          {
+            "source": 1,
+            "statement": "Controle non intrusif - perte de chemin",
+            "quote": "Controle non intrusif - perte de chemin"
+          },
+          {
+            "source": 2,
+            "statement": "HISTORIQUE | Ticket: INC-104 | Date: 2026-09-18 | Actif: Fabric A | Observation / suite: Perte temporaire de chemin HBA1 ; surveillance",
+            "quote": "HISTORIQUE | Ticket: INC-104 | Date: 2026-09-18 | Actif: Fabric A | Observation / suite: Perte temporaire de chemin HBA1 ; surveillance"
+          },
+          {
+            "source": 3,
+            "statement": "En cas de perte d’acces aux volumes, risque sur l’integrite des donnees, alertes contradictoires ou information insuffisante, arreter le diagnostic automatise et escalader vers un technicien habilite. Ne pas executer de commande destructive, de failover ou de reconfiguration depuis l’assistant.",
+            "quote": "En cas de perte d’acces aux volumes, risque sur l’integrite des donnees, alertes contradictoires ou information insuffisante, arreter le diagnostic automatise et escalader vers un technicien habilite. Ne pas executer de commande destructive, de failover ou de reconfiguration depuis l’assistant."
+          },
+          {
+            "source": 4,
+            "statement": "Ne jamais automatiser un failover, un remplacement ou une suppression de volume.",
+            "quote": "Ne jamais automatiser un failover, un remplacement ou une suppression de volume."
+          }
+        ],
+        "clarification": ""
+      },
+      "cited_elements": [
+        "P3-2",
+        "INC-104",
+        "P6-4",
+        "FIG-05"
+      ],
+      "answer_seconds": 33.73
+    },
+    {
+      "question": "Peut-on declencher un failover depuis MaintiDoc ?",
+      "top5": [
+        "AUTORISATIONS-4",
+        "P6-4",
+        "FIG-05",
+        "AUTORISATIONS-1",
+        "AUTORISATIONS-2"
+      ],
+      "seconds": 8.62,
+      "recall5": 1.0,
+      "ndcg5": 1.0,
+      "mrr10": 1.0,
+      "answer": {
+        "claims": [
+          {
+            "source": 1,
+            "statement": "AUTORISATIONS | Operation: Modifier zoning / supprimer LUN / failover | Autorisation dans MaintiDoc: Non : hors perimetre",
+            "quote": "AUTORISATIONS | Operation: Modifier zoning / supprimer LUN / failover | Autorisation dans MaintiDoc: Non : hors perimetre"
+          },
+          {
+            "source": 2,
+            "statement": "En cas de perte d’acces aux volumes, risque sur l’integrite des donnees, alertes contradictoires ou information insuffisante, arreter le diagnostic automatise et escalader vers un technicien habilite. Ne pas executer de commande destructive, de failover ou de reconfiguration depuis l’assistant.",
+            "quote": "En cas de perte d’acces aux volumes, risque sur l’integrite des donnees, alertes contradictoires ou information insuffisante, arreter le diagnostic automatise et escalader vers un technicien habilite. Ne pas executer de commande destructive, de failover ou de reconfiguration depuis l’assistant."
+          }
+        ],
+        "clarification": ""
+      },
+      "cited_elements": [
+        "AUTORISATIONS-4",
+        "P6-4"
+      ],
+      "answer_seconds": 28.35
+    },
+    {
+      "question": "Quelle alerte touche la capacite ?",
+      "top5": [
+        "AL-04",
+        "DISC-02",
+        "FIG-03",
+        "INC-125",
+        "P4-1"
+      ],
+      "seconds": 8.01,
+      "recall5": 1.0,
+      "ndcg5": 1.0,
+      "mrr10": 1.0,
+      "answer": {
+        "claims": [
+          {
+            "source": 1,
+            "statement": "ALARM-TAB-01 | Code: AL-04 | Etat: Orange | Signification pour le simulateur: Capacite libre faible | Reponse documentaire: Consulter tendances et politique capacite",
+            "quote": "ALARM-TAB-01 | Code: AL-04 | Etat: Orange | Signification pour le simulateur: Capacite libre faible | Reponse documentaire: Consulter tendances et politique capacite"
+          },
+          {
+            "source": 2,
+            "statement": "Consulter l’identifiant physique et l’horodatage de l’alerte. Examiner l’etat du groupe de protection et la presence d’une reconstruction en cours. Preparer un ticket avec preuves, sans lancer automatiquement de remplacement ni de reconstruction.",
+            "quote": "Consulter l’identifiant physique et l’horodatage de l’alerte. Examiner l’etat du groupe de protection et la presence d’une reconstruction en cours. Preparer un ticket avec preuves, sans lancer automatiquement de remplacement ni de reconstruction."
+          }
+        ],
+        "clarification": ""
+      },
+      "cited_elements": [
+        "AL-04",
+        "DISC-02"
+      ],
+      "answer_seconds": 27.88
+    },
+    {
+      "question": "Quels elements retrouve-t-on dans le ticket exemple ?",
+      "top5": [
+        "EXEMPLE-TICKET-5",
+        "EXEMPLE-TICKET-1",
+        "P7-2",
+        "PROC-SAN-01",
+        "P5-3"
+      ],
+      "seconds": 9.22,
+      "recall5": 1.0,
+      "ndcg5": 1.0,
+      "mrr10": 1.0,
+      "answer": {
+        "claims": [
+          {
+            "source": 1,
+            "statement": "EXEMPLE-TICKET | Champ: Statut | Exemple: Brouillon - approbation requise",
+            "quote": "EXEMPLE-TICKET | Champ: Statut | Exemple: Brouillon - approbation requise"
+          },
+          {
+            "source": 2,
+            "statement": "EXEMPLE-TICKET | Champ: Equipment ID | Exemple: SAN-LAB-2000",
+            "quote": "EXEMPLE-TICKET | Champ: Equipment ID | Exemple: SAN-LAB-2000"
+          }
+        ],
+        "clarification": ""
+      },
+      "cited_elements": [
+        "EXEMPLE-TICKET-5",
+        "EXEMPLE-TICKET-1"
+      ],
+      "answer_seconds": 26.87
+    }
+  ],
+  "mean": {
+    "recall5": 0.917,
+    "ndcg5": 0.85,
+    "mrr10": 0.819,
+    "seconds": 8.723
+  },
+  "simulated_photos": [
+    {
+      "expected": "FIG-02",
+      "retrieved": [
+        "FIG-02",
+        "FIG-01",
+        "P2-1",
+        "P5-2",
+        "AL-02",
+        "P2-2"
+      ]
+    },
+    {
+      "expected": "FIG-03",
+      "retrieved": [
+        "FIG-03",
+        "FIG-01",
+        "P2-1",
+        "P5-2",
+        "FIG-02",
+        "AL-02"
+      ]
+    },
+    {
+      "expected": "FIG-04",
+      "retrieved": [
+        "FIG-04",
+        "FIG-01",
+        "P2-1",
+        "P5-2",
+        "FIG-02",
+        "AL-02"
+      ]
+    }
+  ],
+  "hardware_photo": {
+    "file": "evaluation-data\\qlogic.jpg",
+    "answer": {
+      "claims": [
+        {
+          "source": 2,
+          "statement": "Une photographie du voyant ne suffit PAS a identifier la cause.",
+          "quote": "Une photographie du voyant ne suffit PAS a identifier la cause."
+        }
+      ],
+      "clarification": "Pouvez-vous confirmer le code d’alarme, le modèle et le contexte du panneau ?"
+    },
+    "retrieved": [
+      "FIG-02",
+      "P5-3",
+      "AL-02",
+      "AL-01",
+      "FIG-04",
+      "AL-04"
+    ]
+  },
+  "ticket_demo": {
+    "paused": true,
+    "approved": true,
+    "duplicate_prevented": true
+  }
+}
